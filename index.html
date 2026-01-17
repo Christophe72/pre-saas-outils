@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webelec - Outils de Démonstration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>⚡ Webelec - Outils de Démonstration</h1>
+            <p class="subtitle">Plateforme SaaS pour professionnels de l'électricité</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="intro">
+            <h2>Bienvenue sur Webelec</h2>
+            <p>Découvrez nos outils professionnels pour simplifier vos calculs électriques et optimiser vos projets.</p>
+        </section>
+
+        <section class="tools-grid">
+            <div class="tool-card">
+                <div class="tool-icon">🔌</div>
+                <h3>Calculateur de Puissance</h3>
+                <p>Calculez la puissance, la tension et le courant selon la loi d'Ohm</p>
+                <button onclick="openTool('power-calculator')">Ouvrir</button>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-icon">📏</div>
+                <h3>Dimensionnement de Câbles</h3>
+                <p>Déterminez la section de câble appropriée pour votre installation</p>
+                <button onclick="openTool('cable-sizer')">Ouvrir</button>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-icon">💰</div>
+                <h3>Estimateur de Coût Énergétique</h3>
+                <p>Calculez le coût de consommation électrique de vos équipements</p>
+                <button onclick="openTool('energy-cost')">Ouvrir</button>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-icon">🔧</div>
+                <h3>Calculateur de Chute de Tension</h3>
+                <p>Vérifiez la chute de tension dans vos circuits électriques</p>
+                <button onclick="openTool('voltage-drop')">Ouvrir</button>
+            </div>
+        </section>
+
+        <!-- Power Calculator Tool -->
+        <div id="power-calculator" class="tool-modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeTool('power-calculator')">&times;</span>
+                <h2>🔌 Calculateur de Puissance</h2>
+                <p class="tool-description">Basé sur la loi d'Ohm: P = U × I</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="voltage">Tension (V):</label>
+                        <input type="number" id="voltage" placeholder="230">
+                    </div>
+                    <div class="input-group">
+                        <label for="current">Courant (A):</label>
+                        <input type="number" id="current" placeholder="10">
+                    </div>
+                    <button onclick="calculatePower()">Calculer</button>
+                    <div id="power-result" class="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cable Sizer Tool -->
+        <div id="cable-sizer" class="tool-modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeTool('cable-sizer')">&times;</span>
+                <h2>📏 Dimensionnement de Câbles</h2>
+                <p class="tool-description">Déterminez la section minimale requise</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="cable-current">Courant nominal (A):</label>
+                        <input type="number" id="cable-current" placeholder="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="cable-type">Type d'installation:</label>
+                        <select id="cable-type">
+                            <option value="1">Encastré dans paroi isolante</option>
+                            <option value="1.15">Sous conduit apparent</option>
+                            <option value="1.25">En apparent</option>
+                        </select>
+                    </div>
+                    <button onclick="calculateCableSize()">Calculer</button>
+                    <div id="cable-result" class="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energy Cost Tool -->
+        <div id="energy-cost" class="tool-modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeTool('energy-cost')">&times;</span>
+                <h2>💰 Estimateur de Coût Énergétique</h2>
+                <p class="tool-description">Calculez le coût de fonctionnement de vos équipements</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="equipment-power">Puissance (W):</label>
+                        <input type="number" id="equipment-power" placeholder="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="usage-hours">Heures d'utilisation par jour:</label>
+                        <input type="number" id="usage-hours" placeholder="8">
+                    </div>
+                    <div class="input-group">
+                        <label for="energy-price">Prix du kWh (€):</label>
+                        <input type="number" step="0.01" id="energy-price" placeholder="0.18">
+                    </div>
+                    <button onclick="calculateEnergyCost()">Calculer</button>
+                    <div id="energy-result" class="result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Voltage Drop Tool -->
+        <div id="voltage-drop" class="tool-modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeTool('voltage-drop')">&times;</span>
+                <h2>🔧 Calculateur de Chute de Tension</h2>
+                <p class="tool-description">Vérifiez la conformité de votre installation</p>
+                
+                <div class="calculator-form">
+                    <div class="input-group">
+                        <label for="drop-current">Courant (A):</label>
+                        <input type="number" id="drop-current" placeholder="20">
+                    </div>
+                    <div class="input-group">
+                        <label for="cable-length">Longueur du câble (m):</label>
+                        <input type="number" id="cable-length" placeholder="50">
+                    </div>
+                    <div class="input-group">
+                        <label for="cable-section">Section du câble (mm²):</label>
+                        <select id="cable-section">
+                            <option value="1.5">1.5</option>
+                            <option value="2.5">2.5</option>
+                            <option value="4">4</option>
+                            <option value="6">6</option>
+                            <option value="10">10</option>
+                            <option value="16">16</option>
+                            <option value="25">25</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="supply-voltage">Tension d'alimentation (V):</label>
+                        <input type="number" id="supply-voltage" placeholder="230">
+                    </div>
+                    <button onclick="calculateVoltageDrop()">Calculer</button>
+                    <div id="voltage-drop-result" class="result"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Webelec - Plateforme SaaS pour professionnels de l'électricité</p>
+            <p>Outils de démonstration - Version 1.0</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
