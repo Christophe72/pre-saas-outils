@@ -10,7 +10,7 @@ function closeTool(toolId) {
 }
 
 // Close modal when clicking outside
-window.onclick = function(event) {
+window.addEventListener('click', function(event) {
     const modals = document.querySelectorAll('.tool-modal');
     modals.forEach(modal => {
         if (event.target === modal) {
@@ -18,6 +18,16 @@ window.onclick = function(event) {
             document.body.style.overflow = 'auto';
         }
     });
+});
+
+// Validation helper function
+function validatePositiveNumber(value, resultDiv, errorMessage = 'Veuillez entrer des valeurs valides et positives.') {
+    if (isNaN(value) || value <= 0) {
+        resultDiv.innerHTML = `<p style="color: #ef4444;">${errorMessage}</p>`;
+        resultDiv.className = 'result show warning';
+        return false;
+    }
+    return true;
 }
 
 // Power Calculator
@@ -26,9 +36,7 @@ function calculatePower() {
     const current = parseFloat(document.getElementById('current').value);
     const resultDiv = document.getElementById('power-result');
 
-    if (isNaN(voltage) || isNaN(current) || voltage <= 0 || current <= 0) {
-        resultDiv.innerHTML = '<p style="color: #ef4444;">Veuillez entrer des valeurs valides et positives.</p>';
-        resultDiv.className = 'result show warning';
+    if (!validatePositiveNumber(voltage, resultDiv) || !validatePositiveNumber(current, resultDiv)) {
         return;
     }
 
@@ -49,12 +57,11 @@ function calculatePower() {
 // Cable Sizer Calculator
 function calculateCableSize() {
     const current = parseFloat(document.getElementById('cable-current').value);
-    const typeCoef = parseFloat(document.getElementById('cable-type').value);
+    const typeSelect = document.getElementById('cable-type');
+    const typeCoef = parseFloat(typeSelect.value);
     const resultDiv = document.getElementById('cable-result');
 
-    if (isNaN(current) || current <= 0) {
-        resultDiv.innerHTML = '<p style="color: #ef4444;">Veuillez entrer un courant valide.</p>';
-        resultDiv.className = 'result show warning';
+    if (!validatePositiveNumber(current, resultDiv, 'Veuillez entrer un courant valide.')) {
         return;
     }
 
@@ -86,7 +93,7 @@ function calculateCableSize() {
         <p><strong>Courant nominal:</strong> ${current} A</p>
         <p><strong>Courant ajusté (avec facteurs):</strong> ${adjustedCurrent.toFixed(2)} A</p>
         <p><strong>Courant max du câble:</strong> ${recommendedCable.maxCurrent} A</p>
-        <p><strong>Type d'installation:</strong> ${document.getElementById('cable-type').options[document.getElementById('cable-type').selectedIndex].text}</p>
+        <p><strong>Type d'installation:</strong> ${typeSelect.options[typeSelect.selectedIndex].text}</p>
         <p style="margin-top: 1rem; font-size: 0.9rem; color: #6b7280;">
             ⚠️ Ces valeurs sont indicatives. Consultez la norme NFC 15-100 pour votre projet spécifique.
         </p>
@@ -101,10 +108,9 @@ function calculateEnergyCost() {
     const pricePerKWh = parseFloat(document.getElementById('energy-price').value);
     const resultDiv = document.getElementById('energy-result');
 
-    if (isNaN(power) || isNaN(hoursPerDay) || isNaN(pricePerKWh) || 
-        power <= 0 || hoursPerDay <= 0 || pricePerKWh <= 0) {
-        resultDiv.innerHTML = '<p style="color: #ef4444;">Veuillez entrer des valeurs valides et positives.</p>';
-        resultDiv.className = 'result show warning';
+    if (!validatePositiveNumber(power, resultDiv) || 
+        !validatePositiveNumber(hoursPerDay, resultDiv) || 
+        !validatePositiveNumber(pricePerKWh, resultDiv)) {
         return;
     }
 
@@ -151,10 +157,10 @@ function calculateVoltageDrop() {
     const voltage = parseFloat(document.getElementById('supply-voltage').value);
     const resultDiv = document.getElementById('voltage-drop-result');
 
-    if (isNaN(current) || isNaN(length) || isNaN(section) || isNaN(voltage) ||
-        current <= 0 || length <= 0 || section <= 0 || voltage <= 0) {
-        resultDiv.innerHTML = '<p style="color: #ef4444;">Veuillez entrer des valeurs valides et positives.</p>';
-        resultDiv.className = 'result show warning';
+    if (!validatePositiveNumber(current, resultDiv) || 
+        !validatePositiveNumber(length, resultDiv) || 
+        !validatePositiveNumber(section, resultDiv) || 
+        !validatePositiveNumber(voltage, resultDiv)) {
         return;
     }
 
